@@ -20,7 +20,14 @@
           <b-row tag="section" class="dashboard">
             <b-col lg="4" class="mb-4 mb-lg-0">
               <div
-                class="infos d-flex justify-content-center align-items-center rounded-lg shadow-lg"
+                class="
+                  infos
+                  d-flex
+                  justify-content-center
+                  align-items-center
+                  rounded-lg
+                  shadow-lg
+                "
               >
                 <div>
                   <h3 class="m-0 p-0">{{ funcionarios.length }}</h3>
@@ -30,7 +37,14 @@
             </b-col>
             <b-col lg="4" class="mb-4 mb-lg-0">
               <div
-                class="infos d-flex justify-content-center align-items-center rounded-lg shadow-lg"
+                class="
+                  infos
+                  d-flex
+                  justify-content-center
+                  align-items-center
+                  rounded-lg
+                  shadow-lg
+                "
               >
                 <div>
                   <h3 class="m-0 p-0">{{ mostrarQtdCargos }}</h3>
@@ -40,7 +54,14 @@
             </b-col>
             <b-col lg="4">
               <div
-                class="infos d-flex justify-content-center align-items-center rounded-lg shadow-lg"
+                class="
+                  infos
+                  d-flex
+                  justify-content-center
+                  align-items-center
+                  rounded-lg
+                  shadow-lg
+                "
               >
                 <div>
                   <h3 class="m-0 p-0">{{ mostrarQtdSetores }}</h3>
@@ -249,9 +270,7 @@
         </b-row>
 
         <b-row v-else>
-          <h6 class="text-center w-100">
-            Não há funcionários cadastrados!
-          </h6>
+          <h6 class="text-center w-100">Não há funcionários cadastrados!</h6>
         </b-row>
       </b-container>
     </main>
@@ -360,9 +379,12 @@ export default {
         if (result.value) {
           // Apenas para exemplificar o contexto, nessa API Fake não da pra subir arquivos.
           axios
-            .patch(`http://localhost:3004/funcionarios/${funcionario.id}`, {
-              tem_arquivo: true,
-            })
+            .patch(
+              `https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios/${funcionario.id}`,
+              {
+                tem_arquivo: true,
+              }
+            )
             .then(() => {
               this.listarFuncionarios();
               Swal.fire({
@@ -381,31 +403,40 @@ export default {
       });
     },
     listarFuncionarios() {
-      axios.get("http://localhost:3004/funcionarios").then((response) => {
-        this.funcionarios = response.data;
-      });
+      axios
+        .get("https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios")
+        .then((response) => {
+          this.funcionarios = response.data;
+        });
     },
     listarCargos() {
-      axios.get("http://localhost:3004/cargos").then((response) => {
-        let cargos = [];
-        response.data.forEach((element) => {
-          cargos.push({ value: element.value, text: element.value });
+      axios
+        .get("https://api-dashboard-oliveira-trust.herokuapp.com/cargos")
+        .then((response) => {
+          let cargos = [];
+          response.data.forEach((element) => {
+            cargos.push({ value: element.value, text: element.value });
+          });
+          this.cargos.options = cargos;
         });
-        this.cargos.options = cargos;
-      });
     },
     listarSetores() {
-      axios.get("http://localhost:3004/setores").then((response) => {
-        let setores = [];
-        response.data.forEach((element) => {
-          setores.push({ value: element.value, text: element.value });
+      axios
+        .get("https://api-dashboard-oliveira-trust.herokuapp.com/setores")
+        .then((response) => {
+          let setores = [];
+          response.data.forEach((element) => {
+            setores.push({ value: element.value, text: element.value });
+          });
+          this.setores.options = setores;
         });
-        this.setores.options = setores;
-      });
     },
     enviarFuncionario() {
       axios
-        .post("http://localhost:3004/funcionarios", this.novoUsuario)
+        .post(
+          "https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios",
+          this.novoUsuario
+        )
         .then(() => {
           this.paginaAtual = 1;
           this.listarFuncionarios();
@@ -428,9 +459,13 @@ export default {
         showCloseButton: true,
       }).then((result) => {
         if (result.isConfirmed)
-          axios.delete(`http://localhost:3004/funcionarios/${id}`).then(() => {
-            this.listarFuncionarios();
-          });
+          axios
+            .delete(
+              `https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios/${id}`
+            )
+            .then(() => {
+              this.listarFuncionarios();
+            });
       });
     },
   },

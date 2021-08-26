@@ -23,27 +23,31 @@ export default new Vuex.Store({
   actions: {
     // Apenas para exemplificar, não irei utilizar token de autenticação por não se tratar de um sistema real
     obterUsuario(context, payload) {
-      return axios.get("http://localhost:3004/usuario").then((response) => {
-        let usuario = response.data[0].email,
-          senha = response.data[0].senha;
+      return axios
+        .get("https://api-dashboard-oliveira-trust.herokuapp.com/usuario")
+        .then((response) => {
+          let usuario = response.data[0].email,
+            senha = response.data[0].senha;
 
-        if (usuario === payload.login && senha === payload.senha) {
-          context.commit("MUDAR_USUARIO", response.data[0]);
-          window.localStorage.user = usuario;
-          window.localStorage.password = senha;
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "usuário ou senha inválidos",
-            confirmButtonColor: "#dc3545",
-          });
-        }
-      });
+          if (usuario === payload.login && senha === payload.senha) {
+            context.commit("MUDAR_USUARIO", response.data[0]);
+            window.localStorage.user = usuario;
+            window.localStorage.password = senha;
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "usuário ou senha inválidos",
+              confirmButtonColor: "#dc3545",
+            });
+          }
+        });
     },
     manterLogado(context) {
-      return axios.get("http://localhost:3004/usuario").then((response) => {
-        context.commit("MUDAR_USUARIO", response.data[0]);
-      });
+      return axios
+        .get("https://api-dashboard-oliveira-trust.herokuapp.com/usuario")
+        .then((response) => {
+          context.commit("MUDAR_USUARIO", response.data[0]);
+        });
     },
     deslogarUsuario(context) {
       context.commit("MUDAR_USUARIO", {
