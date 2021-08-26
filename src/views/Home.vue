@@ -432,23 +432,44 @@ export default {
         });
     },
     enviarFuncionario() {
-      axios
-        .post(
-          "https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios",
-          this.novoUsuario
-        )
-        .then(() => {
-          this.paginaAtual = 1;
-          this.listarFuncionarios();
-          this.novoUsuario.nome_completo = null;
-          this.novoUsuario.cargo = null;
-          this.novoUsuario.setor = null;
-          this.novoUsuario.tempo = null;
-          this.novoUsuario.tem_arquivo = false;
-        })
-        .catch((error) => {
-          window.alert(error);
+      if (
+        this.novoUsuario.nome_completo &&
+        this.novoUsuario.cargo &&
+        this.novoUsuario.setor &&
+        this.novoUsuario.tempo
+      ) {
+        axios
+          .post(
+            "https://api-dashboard-oliveira-trust.herokuapp.com/funcionarios",
+            this.novoUsuario
+          )
+          .then(() => {
+            this.paginaAtual = 1;
+            this.listarFuncionarios();
+            this.novoUsuario.nome_completo = null;
+            this.novoUsuario.cargo = null;
+            this.novoUsuario.setor = null;
+            this.novoUsuario.tempo = null;
+            this.novoUsuario.tem_arquivo = false;
+
+            Swal.fire({
+              title: "Usuário adicionado com sucesso!",
+              position: "top",
+              timer: 1500,
+              width: "28rem",
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            window.alert(error);
+          });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title:
+            "Não adianta me enganar, preencha todos os dados pra continuar!",
         });
+      }
     },
     removerFuncionario(id) {
       Swal.fire({
