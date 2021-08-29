@@ -2,7 +2,7 @@
   <div>
     <Header />
     <Banner />
-    <main class="conteudo">
+    <main class="conteudo" v-if="!estaCarregando">
       <b-container>
         <b-row>
           <b-col>
@@ -12,10 +12,7 @@
           </b-col>
         </b-row>
         <transition name="fade-login" appear>
-          <b-row
-            v-if="mostrarLogin"
-            class="fundo-login py-5 px-3 rounded lg shadow"
-          >
+          <b-row class="fundo-login py-5 px-3 rounded lg shadow">
             <b-col lg="4">
               <b-form>
                 <b-form-group label="E-mail:">
@@ -59,39 +56,42 @@
         </transition>
       </b-container>
     </main>
+    <Spinner v-else />
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header";
 import Banner from "@/components/Banner";
+import Spinner from "@/components/Spinner";
+import { mapState } from "vuex";
 
 export default {
   name: "Login",
   components: {
     Header,
     Banner,
+    Spinner,
   },
   data() {
     return {
-      mostrarLogin: false,
       dados_acesso: {
-        carregando: false,
         login: "",
         senha: null,
       },
     };
   },
+  computed: {
+    ...mapState(["estaCarregando"]),
+  },
   methods: {
     logar() {
-      this.$store.dispatch("obterUsuario", this.dados_acesso).then(() => {
+      this.$store.dispatch("obterUsuario", [this.dados_acesso]).then(() => {
         this.$router.push({ name: "Home" });
       });
     },
   },
-  created() {
-    this.mostrarLogin = true;
-  },
+  created() {},
 };
 </script>
 
